@@ -15,6 +15,7 @@ export class PasswordGeneratorComponent {
   letterArray: string[] = [];
   numberArray: string[] = [];
   specialCharaterArray: string[] = [];
+  passArray: string[] = [];
 
   allChArray: string[] = [];
   setPasswordLength(num: any) {
@@ -35,7 +36,7 @@ export class PasswordGeneratorComponent {
     this.isSplChChecked = !this.isSplChChecked;
   }
 
-  generateNewPassword() {
+  onGenerateButtonClick() {
     console.log('new password generated!');
     this.letterArray = 'abcdefghijklmnopqrstuvwxyz'.split('');
     this.numberArray = '123456789'.split('');
@@ -43,24 +44,28 @@ export class PasswordGeneratorComponent {
     console.log(this.letterArray, this.numberArray, this.specialCharaterArray);
 
     if (this.isLetterChecked) {
-      this.allChArray.concat(this.letterArray);
-      console.log(this.allChArray);
+      this.allChArray.push(...this.letterArray);
+      console.log(this.allChArray, this.letterArray);
     }
     if (this.isNumberChecked) {
-      this.allChArray.concat(this.numberArray);
-      console.log(this.allChArray);
+      this.allChArray.push(...this.numberArray);
+      console.log(this.allChArray, this.numberArray);
     }
     if (this.isLetterChecked) {
-      this.allChArray.concat(this.specialCharaterArray);
-      console.log(this.allChArray);
+      this.allChArray.push(...this.specialCharaterArray);
+      console.log(this.allChArray, this.specialCharaterArray);
     }
 
     if (this.allChArray.length !== 0) {
       for (let i = 0; i < 10; i++) {
         const random = Math.floor(Math.random() * this.allChArray.length);
         console.log(random);
-        this.password.concat(this.allChArray[random]);
+        this.passArray.push(this.allChArray[random]);
       }
     }
+
+    this.password = this.passArray.join('');
+    this.passArray = [];
+    console.log(this.password);
   }
 }
