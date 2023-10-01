@@ -8,64 +8,87 @@ import { Component } from '@angular/core';
 export class PasswordGeneratorComponent {
   password: string = '';
   passwordLen: number = 0;
-  isLetterChecked: boolean = false;
-  isNumberChecked: boolean = false;
-  isSplChChecked: boolean = false;
+  includeLetters: boolean = false;
+  includeNumbers: boolean = false;
+  includeSplChars: boolean = false;
+  msgOnPassLenError: string = 'Password length must be greater than 8!!!';
+  msgOnChkBxError: string = 'Select below password varity';
+  genBtnDisable: boolean = false;
 
-  letterArray: string[] = [];
-  numberArray: string[] = [];
-  specialCharaterArray: string[] = [];
-  passArray: string[] = [];
+  onChangeLength(event: any) {
+    console.log('setPasswordLength ::' + event.target.value);
+    const parsedValue = parseInt(event.target.value);
+    if (parsedValue < 8) {
+      alert(this.msgOnPassLenError);
+      this.genBtnDisable = !this.genBtnDisable;
+    } else {
+      this.genBtnDisable = false;
+    }
+    console.log(
+      'parsed password length ::' +
+        event.target.value +
+        ', Parsed Value:: ' +
+        parsedValue
+    );
+    if (!isNaN(parsedValue)) {
+      this.passwordLen = parsedValue;
+    } else {
+      this.passwordLen = 0;
+    }
+  }
 
-  allChArray: string[] = [];
-  setPasswordLength(num: any) {
-    console.log('setPasswordLength' + num);
-    this.passwordLen = num;
-  }
-  letterChecked() {
-    console.log('letterChecked');
-    this.isLetterChecked = !this.isLetterChecked;
+  onChangeUseLetters() {
+    console.log('onChangeUseLetters:: ' + this.includeLetters);
+    this.includeLetters = !this.includeLetters;
   }
 
-  numberChecked() {
-    console.log('numberChecked');
-    this.isNumberChecked = !this.isNumberChecked;
+  onChangeUseNumbers() {
+    console.log('onChangeUseNumbers:: ' + this.includeNumbers);
+    this.includeNumbers = !this.includeNumbers;
   }
-  specialCharaterChecked() {
-    console.log('specialCharaterChecked');
-    this.isSplChChecked = !this.isSplChChecked;
+
+  onChangeUseSplChars() {
+    console.log('onChangeUseSplChars:: ' + this.includeSplChars);
+    this.includeSplChars = !this.includeSplChars;
   }
 
   onGenerateButtonClick() {
-    console.log('new password generated!');
-    this.letterArray = 'abcdefghijklmnopqrstuvwxyz'.split('');
-    this.numberArray = '123456789'.split('');
-    this.specialCharaterArray = '!@#$%^&*(){}[]_-'.split('');
-    console.log(this.letterArray, this.numberArray, this.specialCharaterArray);
+    console.log('new password about to be generated!');
+    const chars = 'abcdefghijklmnopqrstuvwxyz';
+    const numbers = '123456789';
+    const specialCharaters = '!@#$%^&*(){}[]_-';
 
-    if (this.isLetterChecked) {
-      this.allChArray.push(...this.letterArray);
-      console.log(this.allChArray, this.letterArray);
+    let passwordCombinations = '';
+    let pwd = '';
+
+    if (this.includeLetters) {
+      passwordCombinations += chars;
     }
-    if (this.isNumberChecked) {
-      this.allChArray.push(...this.numberArray);
-      console.log(this.allChArray, this.numberArray);
+    if (this.includeNumbers) {
+      passwordCombinations += numbers;
     }
-    if (this.isLetterChecked) {
-      this.allChArray.push(...this.specialCharaterArray);
-      console.log(this.allChArray, this.specialCharaterArray);
+    if (this.includeSplChars) {
+      passwordCombinations += specialCharaters;
     }
 
-    if (this.allChArray.length !== 0) {
-      for (let i = 0; i < 10; i++) {
-        const random = Math.floor(Math.random() * this.allChArray.length);
-        console.log(random);
-        this.passArray.push(this.allChArray[random]);
+    if (passwordCombinations.length !== 0) {
+      console.log(`
+      About to create a password with following rules:
+      Including Letters: ${this.includeLetters}
+      Including Numbers: ${this.includeNumbers}
+      Including Symbol: ${this.includeSplChars}
+      PasswordCombination: ${passwordCombinations}
+      Password Length: ${this.passwordLen}
+      `);
+      for (let i = 0; i < this.passwordLen; i++) {
+        const randomIndex = Math.floor(
+          Math.random() * passwordCombinations.length
+        );
+        console.log(randomIndex);
+        pwd += passwordCombinations[randomIndex];
       }
     }
-
-    this.password = this.passArray.join('');
-    this.passArray = [];
+    this.password = pwd;
     console.log(this.password);
   }
 }
