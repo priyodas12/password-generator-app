@@ -11,10 +11,19 @@ export class PasswordGeneratorComponent {
   includeLetters: boolean = false;
   includeNumbers: boolean = false;
   includeSplChars: boolean = false;
+  msgOnPassLenError: string = 'Password length must be greater than 8!!!';
+  msgOnChkBxError: string = 'Select below password varity';
+  genBtnDisable: boolean = false;
 
   onChangeLength(event: any) {
     console.log('setPasswordLength ::' + event.target.value);
     const parsedValue = parseInt(event.target.value);
+    if (parsedValue < 8) {
+      alert(this.msgOnPassLenError);
+      this.genBtnDisable = !this.genBtnDisable;
+    } else {
+      this.genBtnDisable = false;
+    }
     console.log(
       'parsed password length ::' +
         event.target.value +
@@ -23,6 +32,8 @@ export class PasswordGeneratorComponent {
     );
     if (!isNaN(parsedValue)) {
       this.passwordLen = parsedValue;
+    } else {
+      this.passwordLen = 0;
     }
   }
 
