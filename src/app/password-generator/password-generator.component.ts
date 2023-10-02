@@ -19,7 +19,6 @@ export class PasswordGeneratorComponent {
     console.log('setPasswordLength ::' + event.target.value);
     const parsedValue = parseInt(event.target.value);
     if (parsedValue < 8) {
-      alert(this.msgOnPassLenError);
       this.genBtnDisable = !this.genBtnDisable;
     } else {
       this.genBtnDisable = false;

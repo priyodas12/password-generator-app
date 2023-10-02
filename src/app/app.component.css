@@ -1,4 +1,9 @@
 .main {
   text-align: center;
-  color: rgb(241, 75, 14);
+  text-justify: inter-word;
+  color: rgb(82, 14, 241);
+
+  background-size: cover;
+  height: 100%;
+  width: 100%;
 }
